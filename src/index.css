@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+}
+
+ul.post {
+  display: block;
+}
+
+ul li {
+  padding: 0 8px;
+}
