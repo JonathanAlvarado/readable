@@ -29,7 +29,7 @@ class EditPost extends Component {
       title: values.title,
       body: values.body,
     }
-    editPost(this.props.post[0].id, postEdit)
+    editPost(this.props.editingPost[0].id, postEdit)
   }
 
   setEditBodyFormPost = (e) => {
