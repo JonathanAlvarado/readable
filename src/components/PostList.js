@@ -29,6 +29,7 @@ class PostList extends Component {
   }
 
   render() {
+
     return (
       <div>
         <hr/>

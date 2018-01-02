@@ -9,16 +9,21 @@ import { editPost } from '../utils/api'
 class EditPost extends Component {
 
   componentWillReceiveProps(nextProps) {
+
     if (this.props.editingPost.length !== nextProps.editingPost.length) {
       this.props.dispatch(
         editFormTitlePost({
-          title: nextProps.editingPost[0] ? nextProps.editingPost[0].title : "loading"
-        }))
+        title: nextProps.editingPost[0] ? nextProps.editingPost[0].title : "loading"
+      }))
 
       this.props.dispatch(
         editFormBodyPost({
           body: nextProps.editingPost[0] ? nextProps.editingPost[0].body : "loading"
         }))
+    }
+    else if (Object.keys(this.props.editFormBodyPost).length === 0 && this.props.editingPost.length > 0 ){
+      this.props.editFormTitlePost.title = this.props.editingPost[0].title;
+      this.props.editFormBodyPost.body = this.props.editingPost[0].body;
     }
   }
 
@@ -30,6 +35,7 @@ class EditPost extends Component {
       body: values.body,
     }
     editPost(this.props.editingPost[0].id, postEdit)
+    window.location.href="/editPost/" + this.props.editingPost[0].id
   }
 
   setEditBodyFormPost = (e) => {
@@ -38,7 +44,7 @@ class EditPost extends Component {
   }
 
   setEditTitleFormPost = (e) => {
-    const title = e.target.value
+    const title = e.target.value;
     this.props.dispatch(editFormTitlePost({title}))
   }
 
@@ -87,10 +93,26 @@ class EditPost extends Component {
 }
 
 function mapStateToProps({post, editFormBodyPost, editFormTitlePost}, ownProps) {
+  var editingPost = post.filter(post => post.id === ownProps.editingPostId);
+  var titlePost = null;
+  var bodyPost = null;
+
+  if (Object.keys(editFormBodyPost).length){
+    titlePost = editFormTitlePost;
+    bodyPost = editFormBodyPost;
+  }
+  else if (Object.keys(editFormBodyPost).length === 0 && editingPost.length > 0){
+    titlePost = {'title': editingPost[0].title}
+    bodyPost = {'body': editingPost[0].body}
+  }else{
+    titlePost = {}
+    bodyPost = {}
+  }
+
   return {
-    editingPost: post.filter(post => post.id === ownProps.editingPostId),
-    editFormBodyPost: editFormBodyPost,
-    editFormTitlePost: editFormTitlePost
+    editingPost: editingPost,
+    editFormBodyPost: bodyPost,
+    editFormTitlePost: titlePost
   }
 }
 

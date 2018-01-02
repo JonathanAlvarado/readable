@@ -20,6 +20,7 @@ class EditComment extends Component {
       body: values.comment,
     }
     editComment(this.props.commentId, commentEdit)
+    window.location.href="/editComment/" + this.props.commentId
   }
 
   setEditBodyFormComment = (e) => {
@@ -61,6 +62,7 @@ class EditComment extends Component {
 }
 
 function mapStateToProps({singleComment}, ownProps) {
+
   return {
     comment: singleComment,
     commentId: ownProps.commentId

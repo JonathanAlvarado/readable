@@ -61,12 +61,14 @@ class Post extends Component {
   }
 
   render() {
-    const {selectedPost, postId} = this.props
+    const {selectedPost, postId, comment} = this.props
 
-    if(selectedPost.length > 0 && selectedPost[0].deleted) {
-      return (
-        <h3>Post deleted</h3>
-      )
+    if(selectedPost.length === 0 && postId !== 'posts') {
+      if(Object.keys(comment).length >  0 && comment[postId] && comment[postId][0].parentDeleted === true) {
+        return (
+          <h3>Post deleted</h3>
+        )
+      }
     }
 
     return (
@@ -119,7 +121,19 @@ class Post extends Component {
                   </Button>
                 </Link>
               </div>
-              
+              <hr/>
+              <div>              
+                <h3>
+                  Comments
+                </h3>
+                <div>
+                  <h4>Total comments: {
+                    this.props.comment.hasOwnProperty(postId) ? 
+                    this.props.comment[postId].length : 0}
+                  </h4>
+                </div>
+              </div>
+              <hr/>
               <div>
                 <h4>Leave a Comment:</h4>
                 <form onSubmit={this.handleSubmitComment(postId)}>
@@ -137,9 +151,6 @@ class Post extends Component {
             <div>
               {this.props.comment[postId] && (
                 <div>
-                  <h3>
-                    Comments
-                  </h3>
                   <div>
                     <ul>
                       <li>
